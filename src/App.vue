@@ -1,31 +1,45 @@
 <script setup lang="ts">
-  import { DeviceState } from './core/domains/DeviceState';
+  import TableHeadingRow from './components/atoms/TableHeadingRow.vue';
+  import TopHero from './components/molecules/TopHero.vue';
+  import { useDeviceState } from './core/domains/useDeviceState';
+  import { useScreenState } from './core/domains/useScreenState';
+  import { useMatchMediaState } from './core/domains/useMatchMediaState';
 
-  const deviceState = new DeviceState();
+  const { deviceState } = useDeviceState();
+  const { screenState } = useScreenState();
+  const { matchMediaState } = useMatchMediaState();
 </script>
 
 <template>
   <div>
-    <div class="hero">
-      <div class="hero-content text-center">
-        <div class="max-w-md">
-          <h1 class="text-5xl font-bold">Foldable Device Checker</h1>
-        </div>
-      </div>
+    <TopHero>Foldable Device Checker</TopHero>
+
+    <div class="p-3">
+      <table class="table">
+        <tbody>
+          <TableHeadingRow>Device</TableHeadingRow>
+          <tr v-for="(value, key) in deviceState" :key="`device_state_${key}`">
+            <th>{{ key }}</th>
+            <td>{{ `${value}` }}</td>
+          </tr>
+
+          <TableHeadingRow>Screen</TableHeadingRow>
+          <tr v-for="(value, key) in screenState" :key="`screen_state_${key}`">
+            <th>{{ key }}</th>
+            <td>{{ `${value}` }}</td>
+          </tr>
+
+          <TableHeadingRow>Match Media</TableHeadingRow>
+          <tr
+            v-for="(value, key) in matchMediaState"
+            :key="`media_query_state_${key}`"
+          >
+            <th>{{ key }}</th>
+            <td>{{ `${value}` }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <table class="table">
-      <tbody>
-        <tr>
-          <th>User Agent</th>
-          <td>{{ deviceState.userAgent }}</td>
-        </tr>
-
-        <tr>
-          <th>screen.orientation.type</th>
-          <td>{{ deviceState.screenOrientationType }}</td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </template>
+./core/domains/useMatchMediaState
